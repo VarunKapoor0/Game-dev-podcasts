@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -49,6 +51,29 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    //kotlin coroutines
+    implementation(libs.kotlinx.coroutines.android)
+    //implementation(libs.kotlinx.coroutines.core)
+    // ViewModel
+    //implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.1")
+    // ViewModel utilities for Compose
+    //implementation(libs.lifecycle.viewmodel.compose)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.1")
+    //Material Icons
+    //implementation(libs.androidx.material.icons.extended)
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    //Lottie for animation
+    //implementation(libs.lottie.compose)
+    implementation("com.airbnb.android:lottie-compose:6.4.0")
+    //Navigation
+    //implementation(libs.androidx.navigation.compose)
+    implementation("androidx.navigation:navigation-compose:2.9.1")
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+    //Hilt navigation
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
