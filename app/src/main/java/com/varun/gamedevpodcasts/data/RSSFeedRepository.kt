@@ -3,6 +3,8 @@ package com.varun.gamedevpodcasts.data
 import android.content.Context
 import android.util.Log
 import com.varun.gamedevpodcasts.R
+import com.varun.gamedevpodcasts.models.Episode
+import com.varun.gamedevpodcasts.models.Podcast
 import com.varun.gamedevpodcasts.models.RssResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Runnable
@@ -12,6 +14,7 @@ import java.io.InputStream
 import java.net.URL
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.collections.arrayListOf
 
 @Singleton
 class RSSFeedRepository @Inject constructor(
@@ -41,35 +44,53 @@ class RSSFeedRepository @Inject constructor(
         return rssList
     }
 
-    fun rssLinkData(rssList: ArrayList<String>): ArrayList<RssResponse>{
-        var responseList: ArrayList<RssResponse> = arrayListOf<RssResponse>()
-
+    fun rssLinkData(rssList: ArrayList<String>): RssResponse {
+        var response: RssResponse = RssResponse(0, arrayListOf<Podcast>())
+        var podcastList: ArrayList<Podcast> = arrayListOf<Podcast>()
+        //thread for url connection
          var thread = Thread(Runnable {
             val factory: XmlPullParserFactory = XmlPullParserFactory.newInstance()
             factory.isNamespaceAware = true
             var xmlPullParser: XmlPullParser = factory.newPullParser()
 
+
             for(link in rssList){
+                var podcast: Podcast = Podcast(link, arrayListOf<Episode>())
+                var episodeList: ArrayList<Episode> = arrayListOf<Episode>()
+                var titles: ArrayList<String> = arrayListOf<String>()
+                var descriptions: ArrayList<String> = arrayListOf<String>()
                 try {
                     var url = URL(link)
                     inputStream = url.openConnection().inputStream
                     xmlPullParser.setInput(inputStream, null)
 
                     var eventType = xmlPullParser.eventType
+                    var insideItem = false
                     while (eventType != XmlPullParser.END_DOCUMENT) {
-                        var response: RssResponse = RssResponse("", "")
                         if (eventType == XmlPullParser.START_TAG) {
-                            if (xmlPullParser.name.equals("title")) {
+                            if(xmlPullParser.name.equals("item")){
+                                insideItem=true
+                            }
+                            else if (xmlPullParser.name.equals("title") && insideItem) {
                                 xmlPullParser.next()
-                                response.title = xmlPullParser.text.trim()
-                            } else if (xmlPullParser.name.equals("description")) {
+                                titles.add(xmlPullParser.text.trim())
+                            } else if (xmlPullParser.name.equals("description") && insideItem) {
                                 xmlPullParser.next()
-                                response.description = xmlPullParser.text.trim()
+                                descriptions.add(xmlPullParser.text.trim())
                             }
                         }
+                        if(eventType== XmlPullParser.END_TAG){
+                            if(xmlPullParser.name.equals("item")){
+                                insideItem = false
 
-                        responseList.add(response)
+                            }
+
+                        }
                         eventType = xmlPullParser.next()
+                    }
+                    for(index in 0..titles.size){
+                        var episode: Episode = Episode(titles[index], descriptions[index])
+                        episodeList.add(episode)
                     }
                 }
                 catch(e: Exception){
@@ -78,11 +99,17 @@ class RSSFeedRepository @Inject constructor(
                 } finally{
                     inputStream?.close()
                 }
+                //add episode list to specific podcast object
+
+                podcast.details = episodeList
+                podcastList.add(podcast)
             }
 
         })
         thread.start()
         thread.join()
-        return responseList
+        response.numberOfLinks = rssList.size
+        response.podcastDetails = podcastList
+        return response
     }
 }

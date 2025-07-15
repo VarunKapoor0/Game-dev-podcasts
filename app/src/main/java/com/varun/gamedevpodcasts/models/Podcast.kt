@@ -1,3 +1,3 @@
 package com.varun.gamedevpodcasts.models
 
-data class Podcast(var title: String, var description: String)
+data class Podcast(var link: String, var details: ArrayList<Episode>)

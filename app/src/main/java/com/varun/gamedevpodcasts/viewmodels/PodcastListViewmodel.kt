@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.varun.gamedevpodcasts.data.RSSFeedRepository
+import com.varun.gamedevpodcasts.models.Podcast
 import com.varun.gamedevpodcasts.models.RssResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,14 +27,16 @@ class PodcastListViewmodel @Inject constructor(
 
     }
 
-    fun podcastList(){
+    fun podcastList(): ArrayList<Podcast>{
+        var list: ArrayList<Podcast> = arrayListOf<Podcast>()
         viewModelScope.launch {
             var rssLinks: ArrayList<String> = arrayListOf<String>()
             rssLinks = repository.pullingXmlParser()
-            var responseList: ArrayList<RssResponse> = arrayListOf<RssResponse>()
-            responseList = repository.rssLinkData(rssLinks)
+            var responseList: RssResponse = repository.rssLinkData(rssLinks)
             Log.d("Viewmodel", "The data from the viewmodel is : $responseList")
+            list = responseList.podcastDetails
         }
+        return list
     }
 
     /*TODO: Send individual card data to the UI. Each link has multiple podcast episodes under it,
