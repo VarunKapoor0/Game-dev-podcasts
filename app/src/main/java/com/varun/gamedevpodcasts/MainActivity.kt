@@ -1,8 +1,6 @@
 package com.varun.gamedevpodcasts
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,33 +11,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.varun.gamedevpodcasts.navigation.Screen
+import com.varun.gamedevpodcasts.ui.screens.episodeScreen.EpisodeScreen
 import com.varun.gamedevpodcasts.ui.screens.homescreen.HomeScreen
-import com.varun.gamedevpodcasts.ui.screens.podcastlistscreen.podcastListScreen
+import com.varun.gamedevpodcasts.ui.screens.podcastlistscreen.PodcastListScreen
 import com.varun.gamedevpodcasts.ui.theme.GameDevPodcastsTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Runnable
-import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserFactory
-import java.io.InputStream
-import java.net.URL
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    val rssList: ArrayList<String> = arrayListOf<String>()
-    var inputStream: InputStream? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        //var title: String = pullingXMLData(context = applicationContext)
         setContent {
             GameDevPodcastsTheme {
                 val navController = rememberNavController()
 
-                NavHost(navController, startDestination = "home") {
-                    composable("home") { HomeScreen(onStartClick = { navController.navigate("podcastlist") }) }
-                    composable("podcastlist") { podcastListScreen() }
+                NavHost(navController, startDestination = Screen.Home.route) {
+                    composable(Screen.Home.route) { HomeScreen(onStartClick = { navController.navigate(Screen.PodcastList.route) }) }
+                    composable(Screen.PodcastList.route) { PodcastListScreen(navController) }
+                    composable(Screen.Episode.route){ EpisodeScreen() }
                 }
                 /*Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(

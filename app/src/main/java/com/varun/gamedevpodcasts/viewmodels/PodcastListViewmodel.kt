@@ -1,11 +1,10 @@
 package com.varun.gamedevpodcasts.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.varun.gamedevpodcasts.data.RSSFeedRepository
-import com.varun.gamedevpodcasts.models.Podcast
-import com.varun.gamedevpodcasts.models.RssResponse
+import com.varun.gamedevpodcasts.data.repositories.RSSFeedRepository
+import com.varun.gamedevpodcasts.data.models.Podcast
+import com.varun.gamedevpodcasts.data.models.RssResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +32,6 @@ class PodcastListViewmodel @Inject constructor(
             var rssLinks: ArrayList<String> = arrayListOf<String>()
             rssLinks = repository.pullingXmlParser()
             var responseList: RssResponse = repository.rssLinkData(rssLinks)
-            Log.d("Viewmodel", "The data from the viewmodel is : $responseList")
             list = responseList.podcastDetails
         }
         return list

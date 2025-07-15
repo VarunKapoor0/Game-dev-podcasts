@@ -1,34 +1,34 @@
 package com.varun.gamedevpodcasts.ui.screens.podcastlistscreen
 
-import android.icu.lang.UCharacter
 import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.varun.gamedevpodcasts.viewmodels.PodcastListViewmodel
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.varun.gamedevpodcasts.navigation.Screen
 
 @Composable
-fun podcastListScreen(){
+fun PodcastListScreen(navController: NavHostController){
 
     val viewmodel: PodcastListViewmodel = hiltViewModel()
-    Log.d("PodcastListScreen", "The screen is about to run the podcastList() function. ")
     var response = viewmodel.podcastList()
-    Log.d("PodcastListScreen", "The screen has run the podcastList() function. ")
 
     LazyColumn(
         modifier = Modifier.fillMaxSize()
-            .padding(64.dp)
+            .padding(48.dp)
     ) {
         item{
             Card { Text("${response.size}") }
@@ -39,12 +39,22 @@ fun podcastListScreen(){
             }
             for(value in values.details){
                 item{
-                    Card(
-                        modifier = Modifier.padding(32.dp)
+                    ElevatedCard(
+                        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+                        modifier = Modifier.fillMaxWidth().padding(12.dp).clickable{navController.navigate(
+                            Screen.Episode.route)}
                     ){
-                        Text("Title: ${value.title}")
-                        Text("Description: ${value.description}")
-                        Spacer(Modifier.height(64.dp))
+                        Text(text = "Episode number is : ${value.episodeNumber}", modifier = Modifier.padding(12.dp))
+                        Text(text = "Title: ${value.title}", modifier = Modifier.padding(12.dp))
+
+                        /*TODO: Every time a card is clicked and the user navigates back, due to to the fact that there
+                        *  is so much data from the repository which is incoming, the app lags. Also, the data keeps
+                        *  adding on top of the previous response, hence, it is a HORRIBLE way to do things.
+                        *  1. Todo is to integrate room in the app for ease of data accessibility, and less overhead.
+                        *  2. Next TODO: is to seperate network calls from the repository to a seperate layer.
+                        *
+                        * */
+                        //Text("Description: ${value.description}") to be added later
                     }
                 }
 
