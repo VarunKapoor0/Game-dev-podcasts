@@ -3,6 +3,7 @@ package com.varun.gamedevpodcasts.data.repositories
 import android.content.Context
 import android.util.Log
 import com.varun.gamedevpodcasts.R
+import com.varun.gamedevpodcasts.data.database.dao.EpisodeDao
 import com.varun.gamedevpodcasts.data.models.Episode
 import com.varun.gamedevpodcasts.data.models.Podcast
 import com.varun.gamedevpodcasts.data.models.RssResponse
@@ -17,8 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class RSSFeedRepository @Inject constructor(
-    @ApplicationContext private val context: Context
-) {
+    @ApplicationContext private val context: Context) {
 
     val rssList: ArrayList<String> = arrayListOf<String>()
     var inputStream: InputStream? = null
@@ -43,6 +43,8 @@ class RSSFeedRepository @Inject constructor(
         return rssList
     }
 
+
+    //TODO: Send all the data to the room db.
     fun rssLinkData(rssList: ArrayList<String>): RssResponse {
         var response: RssResponse = RssResponse(0, arrayListOf<Podcast>())
         var podcastList: ArrayList<Podcast> = arrayListOf<Podcast>()
@@ -60,6 +62,7 @@ class RSSFeedRepository @Inject constructor(
                  var titles: ArrayList<String> = arrayListOf<String>()
                  var descriptions: ArrayList<String> = arrayListOf<String>()
                  var epNums: ArrayList<String> = arrayListOf<String>()
+                 var guids: ArrayList<String> = arrayListOf<String>()
                  try {
                      var url = URL(link)
                      inputStream = url.openConnection().inputStream
@@ -80,6 +83,9 @@ class RSSFeedRepository @Inject constructor(
                              } else if (xmlPullParser.name.equals(("episode")) && insideItem) {
                                  xmlPullParser.next()
                                  epNums.add(xmlPullParser.text.trim())
+                             }else if(xmlPullParser.name.equals("guid") && insideItem){
+                                 xmlPullParser.next()
+                                 guids.add(xmlPullParser.text.trim())
                              }
                          }
                          if (eventType == XmlPullParser.END_TAG) {
@@ -93,7 +99,7 @@ class RSSFeedRepository @Inject constructor(
                      }
                      for (index in 0..titles.size) {
                          var episode: Episode =
-                             Episode(titles[index], descriptions[index], epNums[index])
+                             Episode(titles[index], descriptions[index], epNums[index], guids[index])
                          episodeList.add(episode)
                      }
                  } catch (e: Exception) {

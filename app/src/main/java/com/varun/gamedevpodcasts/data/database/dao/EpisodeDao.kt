@@ -4,13 +4,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.varun.gamedevpodcasts.data.database.entities.EpisodeEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EpisodeDao {
 
-    @Query("SELECT * FROM EpisodeEntity")
-    fun getAllEpisodes(): ArrayList<EpisodeEntity>
+    @Query("SELECT * FROM Episode ORDER BY guid ASC")
+    fun getAllEpisodes(): Flow<List<EpisodeEntity>>
 
     @Insert
-    fun insertEpisode(vararg episodeEntity: EpisodeEntity)
+    suspend fun insertEpisode(episodeEntity: List<EpisodeEntity>)
 }

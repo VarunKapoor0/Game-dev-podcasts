@@ -13,6 +13,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.varun.gamedevpodcasts.viewmodels.PodcastListViewmodel
@@ -24,42 +25,34 @@ import com.varun.gamedevpodcasts.navigation.Screen
 fun PodcastListScreen(navController: NavHostController){
 
     val viewmodel: PodcastListViewmodel = hiltViewModel()
-    var response = viewmodel.podcastList()
-
+    //var response = viewmodel.podcastList()
+    var response = viewmodel.episodes.collectAsState()
     LazyColumn(
         modifier = Modifier.fillMaxSize()
             .padding(48.dp)
     ) {
-        item{
-            Card { Text("${response.size}") }
-        }
-        for (values in response){
+
+        for (values in response.value){
             item{
-                Card { Text("number of episodes: ${values.details.size}") }
-            }
-            for(value in values.details){
-                item{
-                    ElevatedCard(
-                        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
-                        modifier = Modifier.fillMaxWidth().padding(12.dp).clickable{navController.navigate(
-                            Screen.Episode.route)}
-                    ){
-                        Text(text = "Episode number is : ${value.episodeNumber}", modifier = Modifier.padding(12.dp))
-                        Text(text = "Title: ${value.title}", modifier = Modifier.padding(12.dp))
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+                    modifier = Modifier.fillMaxWidth().padding(12.dp).clickable{navController.navigate(
+                        Screen.Episode.route)}
+                ){
+                    Text(text = "Episode number is : ${values.episodeNumber}", modifier = Modifier.padding(12.dp))
+                    Text(text = "Title: ${values.title}", modifier = Modifier.padding(12.dp))
 
-                        /*TODO: Every time a card is clicked and the user navigates back, due to to the fact that there
-                        *  is so much data from the repository which is incoming, the app lags. Also, the data keeps
-                        *  adding on top of the previous response, hence, it is a HORRIBLE way to do things.
-                        *  1. Todo is to integrate room in the app for ease of data accessibility, and less overhead.
-                        *  2. Next TODO: is to seperate network calls from the repository to a seperate layer.
-                        *
-                        * */
-                        //Text("Description: ${value.description}") to be added later
-                    }
+                    /*TODO: Every time a card is clicked and the user navigates back, due to to the fact that there
+                    *  is so much data from the repository which is incoming, the app lags. Also, the data keeps
+                    *  adding on top of the previous response, hence, it is a HORRIBLE way to do things.
+                    *  1. Todo is to integrate room in the app for ease of data accessibility, and less overhead.
+                    *  2. Next TODO: is to seperate network calls from the repository to a seperate layer.
+                    *
+                    * */
+                    //Text("Description: ${value.description}") to be added later
                 }
-
-
             }
+
         }
     }
 }
