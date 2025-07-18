@@ -18,3 +18,11 @@ Done:
 4. Dependency injection using Hilt already in use.
 5. Using XMLPullParser to analyse the data from the rss feeds.
 6. Project structure defined for MVVM protocol.
+
+
+17th July End:
+
+Getting stuck at obtaining podcast title name from each feed. Error thrown in RSSFeedRepository.kt for index out of bounds. Have to fix the following tomorrow:
+
+1. Use of Sets and arraylists for removing duplicates. Either remove while inserting values or via room, no need of converting to sets.
+2. Fix the use of insideChannel variable for getting podcast title. Check if it is working properly and find root cause of the index out of bounds error.
