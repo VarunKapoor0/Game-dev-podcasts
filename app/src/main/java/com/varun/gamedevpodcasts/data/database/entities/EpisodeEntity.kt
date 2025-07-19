@@ -6,7 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "Episode")
 data class EpisodeEntity(
-    @PrimaryKey(autoGenerate = true) var guid: Int = 0,
+    @PrimaryKey() var guid: String,
+    @ColumnInfo(name="podcast_title") var podcastTitle: String,
     @ColumnInfo(name="episode_title") var title: String,
     @ColumnInfo(name="episode_description") var description: String,
-    @ColumnInfo(name="episode_number") var episodeNumber: String)
+    @ColumnInfo(name="episode_url") var url: String,
+    @ColumnInfo(name="episode_number") var episodeNumber: Int,
+    @ColumnInfo(name="episode_seasons") var episodeSeason: Int? = null)

@@ -1,20 +1,13 @@
 package com.varun.gamedevpodcasts.data.repositories
 
-import android.content.Context
 import android.util.Log
-import androidx.compose.ui.platform.LocalGraphicsContext
-import androidx.lifecycle.viewModelScope
 import com.varun.gamedevpodcasts.data.database.dao.EpisodeDao
 import com.varun.gamedevpodcasts.data.database.entities.EpisodeEntity
-import com.varun.gamedevpodcasts.data.models.Episode
 import com.varun.gamedevpodcasts.data.models.Podcast
 import com.varun.gamedevpodcasts.data.models.RssResponse
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EpisodeRoomRepository @Inject constructor(
@@ -24,9 +17,9 @@ class EpisodeRoomRepository @Inject constructor(
     private val _episodes = MutableStateFlow<List<EpisodeEntity>>(emptyList())
     val episodes: StateFlow<List<EpisodeEntity>> = _episodes.asStateFlow()
 
-    init{
+    private val _individualEpisodeData = MutableStateFlow<EpisodeEntity?>(null)
+    val individualEpisodeData: StateFlow<EpisodeEntity?> = _individualEpisodeData.asStateFlow()
 
-    }
 
     suspend fun insertFeedData(){
         Log.d("RoomRepo", "Starting to add episode values inside room db. ")
@@ -42,7 +35,13 @@ class EpisodeRoomRepository @Inject constructor(
         for(value in list){
             for(item in value.details){
                 id++
-                var entity = EpisodeEntity(id, item.title, item.description, item.episodeNumber)
+                var entity = EpisodeEntity(item.guid,
+                    item.podcastTitle,
+                    item.title,
+                    item.description,
+                    item.url,
+                    item.episodeNumber,
+                    item.episodeSeason)
                 episodeEntityArrayList.add(entity)
             }
         }
@@ -51,14 +50,23 @@ class EpisodeRoomRepository @Inject constructor(
         Log.d("RoomRepo", "Added the data to the room repo. ")
     }
 
-    suspend fun getAllData(): List<EpisodeEntity>{
+    //Function to get individual episode data from room
 
-        episodeDao.getAllEpisodes().collect { episodeList ->
+    /*suspend fun getIndividualEpisodeData(epNum: String): EpisodeEntity? {
+        return episodeDao.getEpisodeDetails(epNum).collect { episode ->
+            _individualEpisodeData.value = episode
+        }
+
+    }*/
+
+    /*suspend fun getAllData(): List<EpisodeEntity>{
+
+        episodeDao.getPodcastEpisodes().collect { episodeList ->
             _episodes.value = episodeList
         }
 
         return episodes.value
     }
-
+*/
 
 }
