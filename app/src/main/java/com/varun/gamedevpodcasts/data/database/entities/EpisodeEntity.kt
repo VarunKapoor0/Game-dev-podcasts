@@ -11,5 +11,5 @@ data class EpisodeEntity(
     @ColumnInfo(name="episode_title") var title: String,
     @ColumnInfo(name="episode_description") var description: String,
     @ColumnInfo(name="episode_url") var url: String,
-    @ColumnInfo(name="episode_number") var episodeNumber: Int,
+    @ColumnInfo(name="episode_number") var episodeNumber: Int?,
     @ColumnInfo(name="episode_seasons") var episodeSeason: Int? = null)

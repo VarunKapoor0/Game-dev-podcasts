@@ -18,6 +18,7 @@ import com.varun.gamedevpodcasts.ui.screens.episodeScreen.EpisodeScreen
 import com.varun.gamedevpodcasts.ui.screens.homescreen.HomeScreen
 import com.varun.gamedevpodcasts.ui.screens.episodelistscreen.EpisodeListScreen
 import com.varun.gamedevpodcasts.ui.screens.podcastlistscreen.PodcastListScreen
+import com.varun.gamedevpodcasts.ui.screens.podcastscreen.PodcastScreen
 import com.varun.gamedevpodcasts.ui.theme.GameDevPodcastsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +36,11 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController, startDestination = Screen.Home.route) {
                     composable(Screen.Home.route) { HomeScreen(onStartClick = { navController.navigate(Screen.PodcastList.route) }) }
                     composable(Screen.PodcastList.route){ PodcastListScreen(navController)}
-                    composable(Screen.EpisodeList.route + "/{podcast_name}", arguments = listOf(navArgument("podcast_name") {type =
+                    composable(Screen.Podcast.route + "/{p_name}",
+                        arguments = listOf(navArgument("p_name") {
+                            type = NavType.StringType})){ PodcastScreen(navController) }
+                    composable(Screen.EpisodeList.route + "/{podcast_name}",
+                        arguments = listOf(navArgument("podcast_name") {type =
                     NavType.StringType})) { EpisodeListScreen(navController) }
                     composable(Screen.Episode.route + "/{guid}", arguments = listOf(navArgument("guid") { type =
                         NavType.StringType })) {EpisodeScreen()}

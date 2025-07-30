@@ -28,9 +28,11 @@ class EpisodeListViewmodel @Inject constructor(
 
 init {
     viewModelScope.launch {
+        //Log.d("EpisodeListViewModel", "The podcast name is : $podcastName")
         episodeDao.delete()
         repository.insertFeedData()
         episodeDao.deleteDuplicateEpisodes()
+        Log.d("ViewModel", "The podcast name for episode extraction is : $podcastName")
         episodeDao.getPodcastEpisodes(podcastName).collect { episodeList ->
             //Log.d("ViewModel", "The data from the db is : $episodeList")
             _episodes.value = episodeList
@@ -38,6 +40,14 @@ init {
         Log.d("ViewModel", "The data has been added to the room db. ")
     }
 }
+
+    fun onSeasonSelected(season: Int?){
+        viewModelScope.launch {
+            episodeDao.getSeasonEpisodes(podcastName.toString(), season).collect { seasonalEpisodeList ->
+                _episodes.value = seasonalEpisodeList
+            }
+        }
+    }
 
     /*TODO: Send individual card data to the UI. Each link has multiple podcast episodes under it,
     *  therefore it has to be a list. Already getting responseList, but it contains all the details of all episodes from

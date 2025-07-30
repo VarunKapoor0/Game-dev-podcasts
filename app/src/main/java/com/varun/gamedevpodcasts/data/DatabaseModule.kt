@@ -3,6 +3,7 @@ package com.varun.gamedevpodcasts.data
 import android.content.Context
 import androidx.room.Room
 import com.varun.gamedevpodcasts.data.database.dao.EpisodeDao
+import com.varun.gamedevpodcasts.data.database.dao.PodcastDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +26,10 @@ object DatabaseModule {
     @Provides
     fun getEpisodeDao(database: AppDatabase): EpisodeDao{
         return database.episodeDao()
+    }
+
+    @Provides
+    fun getPodcastDao(database: AppDatabase): PodcastDao{
+        return database.podcastDao()
     }
 }

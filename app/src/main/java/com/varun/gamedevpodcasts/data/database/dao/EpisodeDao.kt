@@ -16,6 +16,9 @@ interface EpisodeDao {
     @Query("SELECT * FROM Episode WHERE podcast_title = :podcastName ORDER BY episode_number DESC ")
     fun getPodcastEpisodes(podcastName: String?): Flow<List<EpisodeEntity>>
 
+    @Query("SELECT * FROM Episode WHERE episode_seasons = :episodeSeason AND podcast_title = :podcastName")
+    fun getSeasonEpisodes(podcastName: String, episodeSeason: Int?): Flow<List<EpisodeEntity>>
+
     @Query("SELECT DISTINCT podcast_title from Episode")
     fun getPodcastNames(): Flow<List<String>>
 
