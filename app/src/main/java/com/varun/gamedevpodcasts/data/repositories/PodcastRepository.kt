@@ -53,18 +53,20 @@ class PodcastRepository @Inject constructor(
                                 xmlPullParser.next()
                                 name = xmlPullParser.text.trim()
                                 podcastTitleObtained = true
-                            } else if (xmlPullParser.name.equals("image")) {
+                            }
+                            else if(xmlPullParser.name.equals("description") && insideChannel && !podcastDescriptionObtained){
+                                xmlPullParser.next()
+                                description = xmlPullParser.text
+                                podcastDescriptionObtained = true
+                            }
+                            else if (xmlPullParser.name.equals("image")) {
                                 insideImage = true
                             } else if (xmlPullParser.name.equals("url") && insideImage && !podcastImageObtained) {
                                 xmlPullParser.next()
                                 imageUrl = xmlPullParser.text
                                 podcastImageObtained = true
                             }
-                            else if(xmlPullParser.name.equals("description")){
-                                xmlPullParser.next()
-                                description = xmlPullParser.text
-                                podcastDescriptionObtained = true
-                            }
+
                         }
                         if(eventType == XmlPullParser.END_TAG){
                             if(xmlPullParser.name.equals("channel")){

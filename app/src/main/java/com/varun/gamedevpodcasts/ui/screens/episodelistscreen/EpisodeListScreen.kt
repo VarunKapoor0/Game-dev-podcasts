@@ -28,19 +28,19 @@ import com.varun.gamedevpodcasts.viewmodels.EpisodeListViewmodel
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.varun.gamedevpodcasts.navigation.Screen
-import com.varun.gamedevpodcasts.ui.utils.longBasicDropdownMenu
 
 @Composable
-fun EpisodeListScreen(navController: NavHostController){
+fun EpisodeListScreen(navController: NavHostController, podcastName: String){
 
     val viewmodel: EpisodeListViewmodel = hiltViewModel()
     //var response = viewmodel.podcastList()
+    viewmodel.getEpisodesFromRoom(podcastName)
     var response = viewmodel.episodes.collectAsState()
     Log.d("EpisodeListScreen", "Inside episodeListScreen. ")
 
     LazyColumn(
         modifier = Modifier.fillMaxSize()
-            .padding(48.dp)
+            .padding(top = 2.dp)
     ) {
         item{
             var expanded by remember { mutableStateOf(false) }
@@ -63,7 +63,7 @@ fun EpisodeListScreen(navController: NavHostController){
                         selectedOption = option
                         DropdownMenuItem(
                             text = { Text("Season $option") },
-                            onClick = { viewmodel.onSeasonSelected(option) }
+                            onClick = { viewmodel.onSeasonSelected(option, podcastName) }
                         )
                     }
                 }

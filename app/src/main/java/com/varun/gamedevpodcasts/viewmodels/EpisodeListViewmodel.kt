@@ -27,7 +27,7 @@ class EpisodeListViewmodel @Inject constructor(
     val episodes: StateFlow<List<EpisodeEntity>> = _episodes.asStateFlow()
 
 init {
-    viewModelScope.launch {
+    /*viewModelScope.launch {
         //Log.d("EpisodeListViewModel", "The podcast name is : $podcastName")
         episodeDao.delete()
         repository.insertFeedData()
@@ -38,10 +38,25 @@ init {
             _episodes.value = episodeList
         }
         Log.d("ViewModel", "The data has been added to the room db. ")
-    }
+    }*/
 }
 
-    fun onSeasonSelected(season: Int?){
+    fun getEpisodesFromRoom(podcastName: String){
+        viewModelScope.launch {
+            //Log.d("EpisodeListViewModel", "The podcast name is : $podcastName")
+            //episodeDao.delete()
+            //repository.insertFeedData()
+            //episodeDao.deleteDuplicateEpisodes()
+            Log.d("ViewModel", "The podcast name for episode extraction is : $podcastName")
+            episodeDao.getPodcastEpisodes(podcastName).collect { episodeList ->
+                //Log.d("ViewModel", "The data from the db is : $episodeList")
+                _episodes.value = episodeList
+            }
+            Log.d("ViewModel", "The data has been added to the room db. ")
+        }
+    }
+
+    fun onSeasonSelected(season: Int?, podcastName: String){
         viewModelScope.launch {
             episodeDao.getSeasonEpisodes(podcastName.toString(), season).collect { seasonalEpisodeList ->
                 _episodes.value = seasonalEpisodeList

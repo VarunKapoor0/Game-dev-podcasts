@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.varun.gamedevpodcasts"
-        minSdk = 24
+        minSdk = 31
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -85,6 +85,10 @@ dependencies {
     implementation("androidx.room:room-ktx:2.7.2")
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    //Splash Screen
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    //Coil for image loading
+    implementation("io.coil-kt:coil-compose:2.4.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

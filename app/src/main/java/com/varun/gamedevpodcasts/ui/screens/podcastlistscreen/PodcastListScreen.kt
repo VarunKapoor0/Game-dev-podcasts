@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.varun.gamedevpodcasts.navigation.Screen
-import com.varun.gamedevpodcasts.ui.screens.podcastscreen.PodcastListItem
 import com.varun.gamedevpodcasts.viewmodels.PodcastListViewModel
 
 @Composable
@@ -25,14 +24,14 @@ fun PodcastListScreen(navController: NavHostController) {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize()
-            .padding(48.dp)
+            .padding(top = 48.dp, start = 6.dp, end = 6.dp)
     ) {
         for(values in nonDBresponse.value){
             item{
                 PodcastListItem(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(12.dp)
+                        .padding(6.dp)
                         .background(color = Color.LightGray)
                         .clickable(onClick = {navController.navigate(
                             Screen.Podcast.route + "/${values.name}")}),
@@ -40,20 +39,6 @@ fun PodcastListScreen(navController: NavHostController) {
                     values.name)
             }
         }
-
-        /*for (value in response.value){
-            item{
-                ElevatedCard(
-                    elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
-                    modifier = Modifier.fillMaxWidth().padding(12.dp).clickable{navController.navigate(
-                        Screen.EpisodeList.route + "/${value}")}
-                ){
-                    Text(text = "Title: $value", modifier = Modifier.padding(12.dp))
-
-                }
-            }
-
-        }*/
     }
 
 }
