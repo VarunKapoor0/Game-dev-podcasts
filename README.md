@@ -59,3 +59,46 @@ TODO:
 
 And any other bugs which will come up(as they do XD)
 
+[30th July START]:
+
+Came back after a few days. The episode list screen is working. Will put handling seasons for podcasts on backlog for now. Action points for today:
+
+TODO:
+
+1. Fix the UI for Home Screen, Podcast list screen, podcast screen, episode list screen and episode screen. 
+2. UI needs to feel smooth and proper positioning of buttons and text. Have to figure out the color too.
+3. Need to analyse and understand if the application requires top/bottom navigation. NOT top priority for now.
+4. Use coil for loading images for podcasts and episodes.
+5. Build loading bars for when data has to be loaded. Currently, the UI blocks until data is obtained / pulled.
+
+[BACKLOG]:
+
+1. Handle seasons in Room and UI.
+2. Add more podcasts. - See point 5
+3. Add some form of genAI for podcast/episode summary.
+4. Analyse the requirement of top/side/bottom navigation for the application.
+5. Possibly use web scraping to obtain rss feeds of more game dev podcasts.
+
+[30th July END]:
+
+Done:
+
+1. Modified the UI for Home Screen, podcast list screen, podcast screen, episode list screen and episode screen.
+2. Now has a Splash screem with a logo.
+3. Podcast screen now has a tab navigation with overview and Episodes tabs.
+4. Episode list screen is now moved to the Episodes tab under podcast screen.
+5. Overview tab contains the description of the podcast.
+6. Episode screen now has description of the episode.
+7. Images now loaded using coil for podcasts.
+8. Added 4 more podcast rss links.
+
+[BACKLOG]:
+
+1. Handle seasons in Room and UI.
+2. Add more podcasts. - See point 5
+3. Add some form of genAI for podcast/episode summary.
+4. Analyse the requirement of top/side/bottom navigation for the application.
+5. Possibly use web scraping to obtain rss feeds of more game dev podcasts.
+6. Build loading bars for when data has to be loaded. Currently, the UI blocks until data is obtained / pulled.
+
+
