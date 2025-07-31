@@ -11,10 +11,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
@@ -38,6 +40,10 @@ fun EpisodeScreen() {
                 append("here")
             }
         })
-        Text("${response.value?.description}")
+        Text(
+            AnnotatedString.fromHtml(
+                response.value?.description.toString()
+            )
+        )
     }
 }

@@ -44,8 +44,8 @@ init {
     fun getEpisodesFromRoom(podcastName: String){
         viewModelScope.launch {
             //Log.d("EpisodeListViewModel", "The podcast name is : $podcastName")
-            //episodeDao.delete()
-            //repository.insertFeedData()
+            episodeDao.delete()
+            repository.insertFeedData()
             //episodeDao.deleteDuplicateEpisodes()
             Log.d("ViewModel", "The podcast name for episode extraction is : $podcastName")
             episodeDao.getPodcastEpisodes(podcastName).collect { episodeList ->
